@@ -1,0 +1,29 @@
+paths:
+  /:
+    get:
+      tags:
+        - Index
+      summary: Go to index api
+      responses:
+        200:
+          description: Has successfully loaded default path
+  /{url_shortened}:
+    get:
+      tags:
+        - Index
+      summary: Redirect to original url saved
+      security: []
+      parameters:
+        - name: url_shortened
+          in: path
+          description: Random unique string generated from original url
+          schema:
+            type: string
+            example: 8a54s6x
+            min: 5
+            max: 10
+      responses:
+        404:
+          description: Shortened url not found
+        302:
+          description: Shortened url found and will be redirected to original url

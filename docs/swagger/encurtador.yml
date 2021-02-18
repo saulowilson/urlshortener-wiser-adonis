@@ -1,0 +1,43 @@
+/encurtador:
+  post:
+    tags:
+      - Encurtador
+    security: []
+    summary: Generate a new shortened URL
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              url:
+                type: string
+                example: 'http://wisereducacao.com.br'
+                required: true
+
+    produces:
+      - application/json
+    responses:
+      201:
+        description: New URL shortened successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newUrl:
+                  example: http://localhost:8081/sa245wsh
+                  type: string
+      400:
+        description: Bad request when body params not informed
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  example: Please provide an url to short
+                  type: string
+      default:
+        description: Unexpected error

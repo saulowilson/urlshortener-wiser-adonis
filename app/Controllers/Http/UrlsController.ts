@@ -3,8 +3,11 @@ import Url from 'App/Models/Url'
 import randomSlug from '../../../utils/generateRandomString'
 import { DateTime } from 'luxon'
 
+const APP_URL = process.env.APP_URL || 'http://localhost:8081'
 export default class UrlsController {
-  public async index({}: HttpContextContract) {}
+  public async index({ response }: HttpContextContract) {
+    return response.send('Wiser URL Shortened API')
+  }
 
   public async store({ request, response }: HttpContextContract) {
     try {
@@ -12,11 +15,11 @@ export default class UrlsController {
       if (!originalUrl)
         return response.status(400).json({ error: 'Please provide an url to short' })
 
+      //If find original_url return in db, return it.
       const urlModel = await Url.findBy('original_url', originalUrl)
-      if (urlModel)
-        return response.status(200).json({ newUrl: 'http://127.0.0.1:3333/' + urlModel.new_url })
+      if (urlModel) return response.status(201).json({ newUrl: `${APP_URL}/${urlModel.new_url}` })
 
-      //Create a random slug url with default lengths: min = 5 and max = 10
+      //Create a random url slug with default lengths: min = 5 and max = 10
       const randomSlugUrl = randomSlug()
 
       //Create a expiration date of 2 days from now
@@ -31,7 +34,7 @@ export default class UrlsController {
       createNewUrl.fill(shortenedUrl)
       await createNewUrl.save()
 
-      return response.status(201).json({ newUrl: 'http://127.0.0.1:3333/' + shortenedUrl.new_url })
+      return response.status(201).json({ newUrl: `${APP_URL}/${shortenedUrl.new_url}` })
     } catch (error) {
       console.error({ error })
       return response.status(500).json({ message: 'Ops! An error happened.', error })
@@ -44,15 +47,10 @@ export default class UrlsController {
       const urlModel = await Url.find(newUrl)
       if (!urlModel) return response.status(404).json({ message: 'Url provided not found' })
 
-      //console.log(urlModel.expiration_date.diff()))
-      console.info(urlModel.expiration_date.diffNow('days').days)
       const isUrlExpired = urlModel.expiration_date.diffNow('days').days > 2
-      console.log(isUrlExpired)
-      if (isUrlExpired) return response.status(404).json({ message: 'Url provided expired' })
+      if (isUrlExpired) return response.status(404).json({ message: 'Url provided is expired' })
 
-      //http://127.0.0.1:3333/942bk2f4
-
-      return response.redirect(urlModel.original_url)
+      return response.redirect(urlModel.original_url, false, 302)
     } catch (error) {
       return response.status(500).json({ message: 'Ops! An error happened.', error })
     }
