@@ -20,7 +20,7 @@ yarn
 ```
 
 ## Run the project
-**Attention:** This repo has a `.env` file included with default necessary variables required by Adonis for a quick start.  If you plan to use this project for your own use, **make sure that include `.env` in your `.gitignore`**.
+**Attention:** This repo has a `.env,example` file included with default necessary variables required by Adonis for a quick start.  If you plan to use this project for your own use, **make sure that include `.env` in your `.gitignore`**.
 
 This project has a pre-configured PostgreSQL and pgAdmin installation in docker. Run **`docker-compose up`** to build up all environment. Change `.env` for custom configuration.
 
