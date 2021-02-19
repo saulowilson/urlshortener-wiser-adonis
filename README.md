@@ -4,7 +4,7 @@
 ### Objective
 The main objective of this repo is to show my skills in creating a simple API  documented and tested.
 ### Live demo
-Click [here](https://acmetrix.com) to go to live demo
+Click [here](https://intense-forest-61637.herokuapp.com) to go to live demo
 ## Setup
 Clone this repo:
 ```sh

@@ -16,6 +16,7 @@ export default class UrlsController {
 
       //If find original_url return in db, return it.
       const urlModel = await Url.findBy('original_url', originalUrl)
+
       if (urlModel) return response.status(201).json({ newUrl: `${APP_URL}/${urlModel.new_url}` })
 
       //Create a random characters with default lengths: min = 5 and max = 10
@@ -47,6 +48,7 @@ export default class UrlsController {
 
       return response.redirect(urlModel.original_url, false, 302)
     } catch (error) {
+      console.error({ error })
       return response.status(500).json({ message: 'Ops! An error happened.', error })
     }
   }

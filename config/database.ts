@@ -37,11 +37,17 @@ const databaseConfig: DatabaseConfig & { orm: Partial<OrmConfig> } = {
     pg: {
       client: 'pg',
       connection: {
-        host: Env.get('PG_HOST'),
+        host: Env.get('PG_HOST') as string,
         port: Env.get('PG_PORT'),
-        user: Env.get('PG_USER'),
-        password: Env.get('PG_PASSWORD', ''),
-        database: Env.get('PG_DB_NAME'),
+        user: Env.get('PG_USER') as string,
+        password: Env.get('PG_PASSWORD', '') as string,
+        database: Env.get('PG_DB_NAME') as string,
+        ssl:
+          Env.get('NODE_ENV') === 'development'
+            ? false
+            : {
+                rejectUnauthorized: false,
+              },
       },
       healthCheck: false,
       debug: false,

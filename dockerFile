@@ -1,6 +1,9 @@
-FROM node:latest
+FROM node:alpine
+RUN apk --no-cache add git
+
 WORKDIR /app
 COPY package.json ./
 COPY . .
 RUN yarn
 EXPOSE 8081
+CMD [ "yarn", "dev" ]
