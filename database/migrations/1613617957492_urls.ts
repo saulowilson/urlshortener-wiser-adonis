@@ -8,7 +8,6 @@ export default class Urls extends BaseSchema {
       //table.increments('id')
       table.string('new_url', 10).primary().notNullable()
       table.string('original_url').notNullable()
-      table.dateTime('expiration_date').notNullable()
       table.timestamps(true)
     })
   }

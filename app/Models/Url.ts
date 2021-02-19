@@ -8,9 +8,6 @@ export default class Url extends BaseModel {
   @column()
   public original_url: string
 
-  @column.dateTime()
-  public expiration_date: DateTime
-
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
