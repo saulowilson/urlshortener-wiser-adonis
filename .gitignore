@@ -4,4 +4,5 @@ coverage
 .vscode
 .DS_STORE
 tmp
+.env
 production.env
