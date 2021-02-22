@@ -10,19 +10,22 @@ export default class UrlsController {
 
   public async store({ request, response }: HttpContextContract) {
     try {
-      const originalUrl: string = request.input('url')
+      let originalUrl: string = request.input('url')
       if (!originalUrl)
         return response.status(400).json({ error: 'Please provide an url to short' })
 
-      //If find original_url return in db, return it.
+      //If find original_url in db, return it.
       const urlModel = await Url.findBy('original_url', originalUrl)
 
       if (urlModel) return response.status(201).json({ newUrl: `${APP_URL}/${urlModel.new_url}` })
 
+      //If original url has not http:// nor https://, add to it.
+      if (!['https://', 'http://'].includes(originalUrl)) originalUrl = 'http://' + originalUrl
+
       //Create a random characters with default lengths: min = 5 and max = 10
       const randomCharacters = createRandomCharacters()
-
       const createNewUrl = new Url()
+
       const shortenedUrl = {
         original_url: originalUrl,
         new_url: `${randomCharacters}`,
